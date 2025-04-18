@@ -1,0 +1,37 @@
+image: node:18
+
+stages:
+  - install
+  - build
+  - test
+  - security
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: install
+  script:
+    - npm ci
+
+build_project:
+  stage: build
+  script:
+    - npm run build
+
+run_unit_tests:
+  stage: test
+  script:
+    - npm run test -- --watch=false --browsers=ChromeHeadless
+
+snyk_security_test:
+  stage: security
+  image: snyk/snyk:docker
+  script:
+    - snyk auth $SNYK_TOKEN
+    - snyk test --all-projects
+  only:
+    - merge_requests
+    - main
