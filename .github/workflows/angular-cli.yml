@@ -19,7 +19,7 @@ jobs:
       run: npm ci
 
     - name: Run Angular Unit Tests
-      run: npm run test -- --watch=false --browsers=ChromeHeadlessCI
+      run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
 
     - name: Run Angular Linter
       run: npm run lint
